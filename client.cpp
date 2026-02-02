@@ -2,7 +2,7 @@
 #include<netdb.h>
 #include<sys/socket.h>
 #include<cstring>
-
+#include <unistd.h>  // <--- Add this!
 int main(){
     struct addrinfo hints{}, *res;
     int sock_fd;
@@ -22,5 +22,16 @@ int main(){
     }
     else{
         std::cout<<"Conection Establised";
+        const char *response = 
+        "HTTP/1.1 200 OK\r\n"
+        "Context-Type: text/html\r\n"
+        "Context-Length: 26\r\n"
+        "Connection: close\r\n"
+        "\r\n"
+        "<h1>Hello Family</h1>";
+        send(new_fd, response, strlen(response), 0);
+        close(new_fd);
     }
+    close(sock_fd);
+    return 0;
 }
